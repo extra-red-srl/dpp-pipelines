@@ -70,9 +70,9 @@ The Quarkus test workflow runs Maven tests on pull requests to ensure code quali
 
 | Variable Name | Description | Default Value |
 |---------------|-------------|---------------|
-| `JAVA_VERSION` | Java version to use for testing | `21` |
-| `JAVA_DISTRIBUTION` | Java distribution to use | `temurin` |
-| `MAVEN_VERSION` | Maven version to use | `3.9.6` |
+| `java_version` | Java version to use for testing | `21` |
+| `java_distribution` | Java distribution to use | `temurin` |
+| `maven_version` | Maven version to use | `3.9.6` |
 
 ### Quarkus Build and Release Workflow
 
@@ -95,15 +95,19 @@ The Quarkus build and release workflow handles building, packaging, and releasin
 
 | Variable Name | Description | Default Value |
 |---------------|-------------|---------------|
-| `JAVA_VERSION` | Java version to use for building | `21` |
-| `JAVA_DISTRIBUTION` | Java distribution to use | `temurin` |
-| `MAVEN_VERSION` | Maven version to use | `3.9.6` |
-| `IMAGE_NAME` | Docker image name | `${{ github.repository }}` |
-| `IMAGE_TAG` | Docker image tag | `${{ github.ref_name }}` |
-| `IMAGE_REGISTRY` | Docker registry URL | `ghcr.io` |
-| `DOCKERFILE_PATH` | Path to Dockerfile | `./src/main/docker/Dockerfile.jvm` |
+| `java_version` | Java version to use for building | `21` |
+| `java_distribution` | Java distribution to use | `temurin` |
+| `maven_version` | Maven version to use | `3.9.6` |
+| `image_name` | Docker image name | `${{ github.repository }}` |
+| `image_tag` | Docker image tag | `${{ github.ref_name }}` |
+| `image_registry` | Docker registry URL | `ghcr.io` |
+| `dockerfile_path` | Path to Dockerfile | `./src/main/docker/Dockerfile.jvm` |
 
-## Usage Examples
+## Usage
+
+1. Create a new workflow file in your repository under `.github/workflows/<workflow-name>.yml`.
+2. Copy the relevant workflow example from below.
+3. Adjust the `on` triggers and `with` inputs as necessary for your project.
 
 ### Using Node.js Workflows
 
