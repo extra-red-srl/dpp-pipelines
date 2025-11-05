@@ -98,7 +98,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "${{ github.ref_name }}"
+          tag_name: "${{ github.ref_name }}-${{ inputs.profile_maven }}"
           release_name: "${{ github.ref_name }}-${{ inputs.profile_maven }}"
           body: |
             ## Changes in this Release
