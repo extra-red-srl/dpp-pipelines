@@ -69,7 +69,7 @@ jobs:
         id: extract_info
         run: |
           ARTIFACT_FINALNAME=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)
-          echo "final_name=$ARTIFACT_FINALNAME-${{ inputs.profile_maven }}" >> $GITHUB_OUTPUT
+          echo "final_name=$ARTIFACT_FINALNAME" >> $GITHUB_OUTPUT
 
       - name: Run build
         run: |
@@ -121,5 +121,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ inputs.target_maven_path }}${{ steps.extract_info.outputs.final_name }}.jar
-          asset_name: ${{ steps.extract_info.outputs.final_name }}.jar
+          asset_name: ${{ steps.extract_info.outputs.final_name }}-${{ inputs.profile_maven }}.jar
           asset_content_type: application/java-archive
