@@ -15,6 +15,13 @@ on:
         required: false
         type: string
         default: '3.9.6'
+      target_maven_path:
+        required: false
+        type: string
+        default: './target/'
+      profile_maven:
+        required: true
+        type: string
       image_name:
         required: false
         type: string
@@ -62,11 +69,11 @@ jobs:
         id: extract_info
         run: |
           ARTIFACT_FINALNAME=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)
-          echo "final_name=$ARTIFACT_FINALNAME" >> $GITHUB_OUTPUT
+          echo "final_name=$ARTIFACT_FINALNAME-${{ inputs.profile_maven }}" >> $GITHUB_OUTPUT
 
       - name: Run build
         run: |
-          mvn clean package
+          mvn clean package -P${{ inputs.profile_maven }}
 
       - name: Log in to Image Container Registry
         uses: docker/login-action@v3
@@ -81,8 +88,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ inputs.image_registry }}/${{ inputs.image_name }}:${{ inputs.image_tag }}
-            ${{ inputs.image_registry }}/${{ inputs.image_name }}:latest
+            ${{ inputs.image_registry }}/${{ inputs.image_name }}-${{ inputs.profile_maven }}:${{ inputs.image_tag }}
+            ${{ inputs.image_registry }}/${{ inputs.image_name }}-${{ inputs.profile_maven }}:latest
           file: ${{ inputs.dockerfile_path }}
 
       - name: Create GitHub Release
@@ -97,8 +104,8 @@ jobs:
             ## Changes in this Release
             
             ### Docker Images
-            - Container Image: `${{ inputs.image_registry }}/${{ inputs.image_name }}:${{ inputs.image_tag }}`
-            - Container Image: `${{ inputs.image_registry }}/${{ inputs.image_name }}:latest`
+            - Container Image: `${{ inputs.image_registry }}/${{ inputs.image_name }}-${{ inputs.profile_maven }}:${{ inputs.image_tag }}`
+            - Container Image: `${{ inputs.image_registry }}/${{ inputs.image_name }}-${{ inputs.profile_maven }}:latest`
 
             ### Artifacts
             - JAR artifact is attached to this release
@@ -113,6 +120,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/${{ steps.extract_info.outputs.final_name }}.jar
+          asset_path: ${{ inputs.target_maven_path }}${{ steps.extract_info.outputs.final_name }}.jar
           asset_name: ${{ steps.extract_info.outputs.final_name }}.jar
           asset_content_type: application/java-archive
