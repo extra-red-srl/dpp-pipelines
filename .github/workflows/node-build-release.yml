@@ -30,7 +30,11 @@ on:
       dockerfile_path:
         required: false
         type: string
-        default: './Dockerfile'
+        default: './Dockerfile'      
+      docker_build_arguments:
+        required: false
+        type: string
+        default: ""
 
 jobs:
   build-release:
@@ -87,6 +91,7 @@ jobs:
             ${{ inputs.image_registry }}/${{ inputs.image_name }}:${{ inputs.image_tag }}
             ${{ inputs.image_registry }}/${{ inputs.image_name }}:latest
           file: ${{ inputs.dockerfile_path }}
+          build-args: ${{ inputs.docker_build_arguments }}
 
       - name: Create GitHub Release
         id: create_release
