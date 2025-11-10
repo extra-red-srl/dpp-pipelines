@@ -51,6 +51,7 @@ The Node.js build and release workflow handles building, packaging, and releasin
 | `image_tag` | Docker image tag | `${{ github.ref_name }}` |
 | `image_registry` | Docker registry URL | `ghcr.io` |
 | `dockerfile_path` | Path to Dockerfile | `./Dockerfile` |
+| `docker_build_arguments` | Build args for Docker | ` ` |
 
 ## Quarkus Workflows
 
@@ -98,10 +99,13 @@ The Quarkus build and release workflow handles building, packaging, and releasin
 | `java_version` | Java version to use for building | `21` |
 | `java_distribution` | Java distribution to use | `temurin` |
 | `maven_version` | Maven version to use | `3.9.6` |
+| `target_maven_path` | Maven target path for jar packages | REQUIRED |
+| `profile_maven` | Maven profile to use in maven package | REQUIRED |
 | `image_name` | Docker image name | `${{ github.repository }}` |
 | `image_tag` | Docker image tag | `${{ github.ref_name }}` |
 | `image_registry` | Docker registry URL | `ghcr.io` |
 | `dockerfile_path` | Path to Dockerfile | `./src/main/docker/Dockerfile.jvm` |
+| `docker_build_arguments` | Build args for Docker | ` ` |
 
 ## Usage
 
@@ -147,7 +151,7 @@ jobs:
       image_tag: '${{ github.ref_name }}'
       image_registry: 'ghcr.io'
       dockerfile_path: './Dockerfile'
-
+      docker_build_arguments: ''
 ```
 
 ### Using Quarkus Workflows
@@ -190,6 +194,9 @@ jobs:
       image_tag: '${{ github.ref_name }}'
       image_registry: 'ghcr.io'
       dockerfile_path: './src/main/docker/Dockerfile.jvm'
+      docker_build_arguments: ''
+      profile_maven: 'native'
+      target_maven_path: './target/'
 ```
 
 ## Prerequisites

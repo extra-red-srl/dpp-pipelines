@@ -38,6 +38,10 @@ on:
         required: false
         type: string
         default: './src/main/docker/Dockerfile.jvm'
+      docker_build_arguments:
+        required: false
+        type: string
+        default: ""
 
 jobs:
   build-release:
@@ -91,6 +95,7 @@ jobs:
             ${{ inputs.image_registry }}/${{ inputs.image_name }}-${{ inputs.profile_maven }}:${{ inputs.image_tag }}
             ${{ inputs.image_registry }}/${{ inputs.image_name }}-${{ inputs.profile_maven }}:latest
           file: ${{ inputs.dockerfile_path }}
+          build-args: ${{ inputs.docker_build_arguments }}
 
       - name: Create GitHub Release
         id: create_release
