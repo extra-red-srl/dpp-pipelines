@@ -120,9 +120,17 @@ jobs:
           prerelease: false
       - name: Package fast-jar for distribution
         run: |
-          cd ${{ inputs.target_maven_path }}
-          tar -czf quarkus-app-${{ github.ref_name }}.tar.gz quarkus-app/
-          zip -r quarkus-app-${{ github.ref_name }}.zip quarkus-app/
+          WORKSPACE="${{ github.workspace }}"
+          TARGET_PATH="${{ inputs.target_maven_path }}"
+    
+          TARGET_PATH="${TARGET_PATH%/}"
+    
+          tar -czf "${WORKSPACE}/quarkus-app-${{ github.ref_name }}.tar.gz" \
+          -C "${TARGET_PATH}" \
+          quarkus-app/
+
+          cd "${TARGET_PATH}/quarkus-app"
+          zip -r "${WORKSPACE}/quarkus-app-${{ github.ref_name }}.zip" .
       - name: Upload fast-jar TAR.GZ to release
         uses: actions/upload-release-asset@v1
         env:
