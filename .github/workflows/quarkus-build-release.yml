@@ -118,26 +118,13 @@ jobs:
             **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ github.ref_name }}...HEAD
           draft: false
           prerelease: false
-      - name: Package fast-jar for distribution
-        run: |
-          cd ${{ inputs.target_maven_path }}
-          tar -czf quarkus-app-${{ github.ref_name }}.tar.gz quarkus-app/
-          zip -r quarkus-app-${{ github.ref_name }}.zip quarkus-app/
-      - name: Upload fast-jar TAR.GZ to release
+
+      - name: Upload JAR artifact to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./quarkus-app-${{ github.ref_name }}.tar.gz
-          asset_name: ${{ steps.extract_info.outputs.final_name }}-${{ inputs.profile_maven }}-fast-jar.tar.gz
-          asset_content_type: application/gzip
-      - name: Upload fast-jar ZIP to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./quarkus-app-${{ github.ref_name }}.zip
-          asset_name: ${{ steps.extract_info.outputs.final_name }}-${{ inputs.profile_maven }}-fast-jar.zip
-          asset_content_type: application/zip
+          asset_path: ${{ inputs.target_maven_path }}${{ steps.extract_info.outputs.final_name }}.jar
+          asset_name: ${{ steps.extract_info.outputs.final_name }}-${{ inputs.profile_maven }}.jar
+          asset_content_type: application/java-archive
