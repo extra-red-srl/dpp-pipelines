@@ -138,7 +138,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./quarkus-app-${{ github.ref_name }}.tar.gz
-          asset_name: ${{ steps.extract_info.outputs.final_name }}-${{ inputs.profile_maven }}-fast-jar.tar.gz
+          asset_name: ${{ inputs.image_name }}-${{ inputs.profile_maven }}-fast-jar.tar.gz
           asset_content_type: application/gzip
       - name: Upload fast-jar ZIP to release
         uses: actions/upload-release-asset@v1
@@ -147,5 +147,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./quarkus-app-${{ github.ref_name }}.zip
-          asset_name: ${{ github.event.repository.name }}-${{ inputs.profile_maven }}-fast-jar.zip
+          asset_name: ${{ inputs.image_name }}-${{ inputs.profile_maven }}-fast-jar.zip
           asset_content_type: application/zip
